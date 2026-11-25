@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#6d5cff">
+<title>خزنة الباسوردات</title>
+<style>
+:root{--bg:#f3f4fb;--card:#ffffff;--tx:#171a26;--mut:#6b7186;--ac:#6d5cff;--ac2:#8f7fff;--act:#ffffff;--bd:#e4e6f0;--dg:#e5484d;--ok:#16a34a;--chip:#eceaf7}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1020;--card:#1a1c2e;--tx:#eef0fa;--mut:#9aa0b8;--ac:#8f7fff;--ac2:#6d5cff;--act:#101226;--bd:#2b2e45;--dg:#f87171;--chip:#232641}}
+:root[data-theme="dark"]{--bg:#0e1020;--card:#1a1c2e;--tx:#eef0fa;--mut:#9aa0b8;--ac:#8f7fff;--ac2:#6d5cff;--act:#101226;--bd:#2b2e45;--dg:#f87171;--chip:#232641}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;line-height:1.5;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.w{max-width:520px;margin:0 auto;padding:16px}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:0 2px 4px rgba(20,16,60,.04),0 10px 28px rgba(20,16,60,.07)}
+input,textarea,select{width:100%;padding:12px;margin:5px 0;border:1px solid var(--bd);border-radius:12px;background:var(--bg);color:var(--tx);font:inherit;font-size:16px}
+input:focus,textarea:focus,select:focus{outline:0;border-color:var(--ac);box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 25%,transparent)}
+button{padding:11px 16px;border:0;border-radius:12px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font:inherit;font-weight:700;cursor:pointer;transition:transform .1s,opacity .15s}
+button:active{transform:scale(.96)}
+button.s{background:transparent;color:var(--ac);border:1px solid var(--bd)}
+button.d{background:transparent;color:var(--dg);border:1px solid var(--bd)}
+.r{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.r>input{flex:1}
+.m{color:var(--mut);font-size:13px}
+.e{color:var(--dg);font-size:14px;min-height:20px}
+.pw{direction:ltr;text-align:left;font-family:ui-monospace,Menlo,monospace;word-break:break-all}
+.hide{display:none}
+/* شاشة القفل */
+#lock{margin-top:6vh;text-align:center;padding:30px 20px}
+#lock .logo{width:84px;height:84px;margin:0 auto 12px;border-radius:26px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;font-size:42px;box-shadow:0 12px 30px color-mix(in srgb,var(--ac) 45%,transparent)}
+#lock h2{margin:4px 0 2px;font-size:24px}
+#lock button.go{width:100%;margin-top:8px;padding:13px}
+#lock .eye{flex:none;padding:11px 12px}
+/* الهيدر */
+.hdr{display:flex;justify-content:space-between;align-items:center;margin:4px 0 14px;padding:0 2px}
+.hdr .t b{font-size:22px;display:block}
+.hdr .t span{font-size:12px;color:var(--mut)}
+.hdr .btns{display:flex;gap:6px}
+.hdr .btns button{padding:8px 11px;font-size:15px;border-radius:12px}
+/* البحث */
+.bar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 6px);z-index:5;background:var(--bg);padding:6px 0;margin-bottom:8px}
+#q{margin:0}
+/* الشرائح */
+#ch{flex-wrap:nowrap;overflow-x:auto;padding:2px 0 8px;margin-bottom:6px}
+#ch button{flex:none;padding:7px 14px;font-size:13px;border-radius:20px;background:var(--chip);color:var(--tx);border:0;font-weight:600}
+#ch button.on{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+/* الفورم */
+.fold>b{display:flex;justify-content:space-between;cursor:pointer;font-size:16px;margin-bottom:4px}
+.fold:not(.open)>:not(b){display:none}
+#sf{height:100%;width:0;border-radius:3px;transition:width .2s,background .2s}
+/* المولد */
+#genbox{border:1px dashed var(--bd);border-radius:14px;padding:12px;margin:6px 0}
+#genbox .opts{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;margin:6px 0}
+#genbox .opts label{display:flex;gap:5px;align-items:center;cursor:pointer}
+#genbox .opts input{width:auto;margin:0}
+#genout{background:var(--bg);border-radius:10px;padding:9px 11px;margin:6px 0;font-size:15px}
+input[type=range]{padding:0;accent-color:var(--ac)}
+/* العناصر */
+.i .hd{display:flex;gap:12px;align-items:center}
+.av{width:46px;height:46px;border-radius:16px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:19px;flex:none}
+.tt{min-width:0;flex:1}
+.tt b,.tt span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag{display:inline-block;background:var(--chip);color:var(--mut);border-radius:8px;padding:1px 8px;font-size:11px}
+.star{background:none;border:0;font-size:20px;padding:2px 4px;color:var(--mut)}
+.star.on{color:#f5a623}
+.i .pwl{background:var(--bg);border-radius:12px;padding:9px 11px;margin:8px 0}
+.i .acts button{flex:1;padding:8px 4px;font-size:13px;border-radius:10px}
+.empty{text-align:center;padding:36px 10px}
+/* بانر التنبيه */
+#bn{border-color:var(--dg);font-size:14px}
+</style>
+</head>
+<body>
+<div class="w">
+
+<!-- شاشة القفل -->
+<div id="lock" class="c">
+<div class="logo">🔐</div>
+<h2>خزنة الباسوردات</h2>
+<p id="lt" class="m"></p>
+<div class="r"><input id="mp" type="password" placeholder="الباسورد الرئيسي" autocomplete="off"><button class="s eye" id="eye" type="button">👁</button></div>
+<input id="mp2" type="password" placeholder="أعد كتابة الباسورد الرئيسي" class="hide" autocomplete="off">
+<div class="e" id="le"></div>
+<button class="go" id="lb">فتح</button>
+<p class="m" style="margin-top:14px">كل بياناتك مشفّرة على جهازك فقط، ومفيش أي حاجة بتتبعت لأي سيرفر.</p>
+</div>
+
+<!-- التطبيق -->
+<div id="app" class="hide">
+<div class="hdr">
+<div class="t"><b>🔐 خزنتي</b><span id="cnt"></span></div>
+<div class="btns"><button class="s" id="tg" aria-label="تغيير المظهر">🌓</button><button class="s" id="lk">🔒 قفل</button></div>
+</div>
+
+<div id="bn" class="c hide"></div>
+
+<div class="bar"><input id="q" placeholder="🔎 ابحث عن حساب"></div>
+<div id="ch" class="r"></div>
+
+<!-- إضافة حساب -->
+<div class="c">
+<div class="fold open" id="af">
+<b id="th">➕ إضافة حساب جديد <span id="ta">−</span></b>
+<input id="a1" placeholder="الموقع أو التطبيق (مثال: فيسبوك)">
+<input id="a2" placeholder="اسم المستخدم أو الإيميل" dir="ltr">
+<div class="r"><input id="a3" placeholder="الباسورد" dir="ltr"><button class="s" id="gn" type="button">🎲 توليد</button></div>
+<div style="height:5px;border-radius:3px;background:var(--bd);margin:4px 0"><div id="sf"></div></div>
+
+<div id="genbox" class="hide">
+<div class="r"><span class="m">الطول:</span><input type="range" id="gl" min="8" max="32" value="16" style="flex:1"><b id="glv">16</b></div>
+<div class="opts">
+<label><input type="checkbox" id="gu" checked> أحرف كبيرة</label>
+<label><input type="checkbox" id="gd" checked> أرقام</label>
+<label><input type="checkbox" id="gs" checked> رموز</label>
+</div>
+<div id="genout" class="pw"></div>
+<div class="r"><button class="s" id="gre" type="button">🔄 توليد تاني</button><button id="guse" type="button">✅ استخدام</button></div>
+</div>
+
+<select id="a4"></select>
+<textarea id="a5" rows="2" placeholder="ملاحظات (أسئلة الأمان، رقم الهاتف المرتبط…)"></textarea>
+<button id="ad" style="margin-top:6px;width:100%">حفظ</button>
+</div>
+</div>
+
+<div id="ls"></div>
+
+<!-- الإعدادات -->
+<div class="c">
+<div class="fold" id="sf2">
+<b>⚙️ النسخ الاحتياطي والإعدادات <span id="ta2">＋</span></b>
+<p class="m">بياناتك محفوظة على الجهاز ده بس. اعمل نسخة احتياطية (مشفّرة) واحفظها في مكان آمن.</p>
+<div class="r"><button class="s" id="dlb">⬇️ تحميل كملف</button><button class="s" id="ex">عرض النسخة</button><button class="s" id="im">استيراد</button></div>
+<textarea id="bk" rows="4" class="hide" dir="ltr"></textarea>
+<div class="e" id="be"></div>
+<hr style="border:0;border-top:1px solid var(--bd);margin:14px 0">
+<b>تغيير الباسورد الرئيسي</b>
+<input id="np" type="password" placeholder="الباسورد الجديد (12 حرف+)" autocomplete="off">
+<button class="s" id="cpw">تغيير</button> <span class="m" id="ce"></span>
+</div>
+</div>
+
+</div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s),enc=new TextEncoder(),dec=new TextDecoder();
+const b64=b=>{let s='';new Uint8Array(b).forEach(x=>s+=String.fromCharCode(x));return btoa(s)};
+const unb=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+let key=null,salt=null,items=[],timer=null,mem=null,iter=600000,hideT=null,eid=null,cat='';
+const gv=k=>{try{return +localStorage.getItem(k)||0}catch(e){return 0}};
+const sv=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+
+function load(){try{return JSON.parse(localStorage.getItem('vault'))}catch(e){return mem}}
+async function derive(pw,s,n){
+ const m=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveKey']);
+ return crypto.subtle.deriveKey({name:'PBKDF2',salt:s,iterations:n,hash:'SHA-256'},m,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+async function seal(){
+ const iv=crypto.getRandomValues(new Uint8Array(12));
+ const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,enc.encode(JSON.stringify(items)));
+ const v={n:iter,s:b64(salt),i:b64(iv),d:b64(ct)};sv('d',gv('d')+1);
+ mem=v;
+ try{localStorage.setItem('vault',JSON.stringify(v))}catch(e){}
+ return v;
+}
+
+/* القفل والفتح */
+function initLock(){
+ const v=load();
+ $('#lt').textContent=v?'اكتب الباسورد الرئيسي لفتح الخزنة.':'أول مرة: اختار باسورد رئيسي قوي (12 حرف أو أكتر، والأفضل جملة طويلة). لو نسيته مفيش طريقة لاسترجاع بياناتك.';
+ $('#mp2').classList.toggle('hide',!!v);
+ $('#lb').textContent=v?'فتح':'إنشاء الخزنة';
+}
+$('#eye').onclick=()=>{const i=$('#mp');i.type=i.type==='password'?'text':'password'};
+$('#lb').onclick=async()=>{
+ const pw=$('#mp').value,v=load();$('#le').textContent='';const w=gv('u')-Date.now();if(w>0){$('#le').textContent='محاولات كتير غلط. حاول بعد '+Math.ceil(w/1000)+' ثانية';return}
+ if(!pw){$('#le').textContent='اكتب الباسورد الرئيسي';return}
+ try{
+  if(!v){
+   if(pw.length<12){$('#le').textContent='الباسورد الرئيسي لازم يكون 12 حرف على الأقل';return}
+   if(pw!==$('#mp2').value){$('#le').textContent='الباسوردين مش متطابقين';return}
+   salt=crypto.getRandomValues(new Uint8Array(16));iter=600000;key=await derive(pw,salt,iter);items=[];await seal();sv('d',0);
+  }else{
+   const n=v.n||200000;salt=unb(v.s);key=await derive(pw,salt,n);
+   const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:unb(v.i)},key,unb(v.d));
+   items=JSON.parse(dec.decode(pt));if(n<600000){salt=crypto.getRandomValues(new Uint8Array(16));iter=600000;key=await derive(pw,salt,iter);await seal();sv('d',gv('d')-1)}sv('f',0);
+  }
+ }catch(e){key=null;const f=gv('f')+1;sv('f',f);if(f>=3)sv('u',Date.now()+Math.min(300000,5000*2**(f-3)));$('#le').textContent='الباسورد الرئيسي غلط';return}
+ $('#mp').value='';$('#mp2').value='';$('#mp').type='password';
+ $('#lock').classList.add('hide');$('#app').classList.remove('hide');
+ render();bump();
+};
+function lock(){key=null;items=[];eid=null;clearTimeout(timer);$('#app').classList.add('hide');$('#lock').classList.remove('hide');$('#ls').textContent='';$('#q').value='';initLock()}
+$('#lk').onclick=lock;
+function bump(){clearTimeout(timer);timer=setTimeout(lock,180000)}
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&key){hideT=setTimeout(lock,60000)}else clearTimeout(hideT)});
+['click','keydown','touchstart'].forEach(ev=>document.addEventListener(ev,()=>{if(key)bump()}));
+
+/* مولد الباسوردات */
+function genpw(){
+ const len=+$('#gl').value;
+ let cs='abcdefghijkmnopqrstuvwxyz';
+ if($('#gu').checked)cs+='ABCDEFGHJKLMNPQRSTUVWXYZ';
+ if($('#gd').checked)cs+='23456789';
+ if($('#gs').checked)cs+='!@#$%^&*';
+ const r=crypto.getRandomValues(new Uint32Array(len));
+ return Array.from(r,x=>cs[x%cs.length]).join('');
+}
+function showGen(){$('#genout').textContent=genpw();$('#glv').textContent=$('#gl').value}
+$('#gn').onclick=()=>{$('#genbox').classList.toggle('hide');if(!$('#genbox').classList.contains('hide'))showGen()};
+$('#gl').oninput=showGen;$('#gu').onchange=showGen;$('#gd').onchange=showGen;$('#gs').onchange=showGen;
+$('#gre').onclick=showGen;
+$('#guse').onclick=()=>{$('#a3').value=$('#genout').textContent;strength();$('#genbox').classList.add('hide')};
+
+/* إضافة وتعديل */
+$('#ad').onclick=async()=>{
+ const n=$('#a1').value.trim(),u=$('#a2').value.trim(),p=$('#a3').value,c=$('#a4').value,nt=$('#a5').value.trim();
+ if(!n||!p)return;
+ if(eid){const it=items.find(y=>y.id===eid);if(it){it.n=n;it.u=u;it.p=p;it.c=c;it.nt=nt;it.t=Date.now()}eid=null;$('#ad').textContent='حفظ'}
+ else items.push({id:Date.now(),n,u,p,c,nt,fav:false,t:Date.now()});
+ await seal();
+ ['#a1','#a2','#a3','#a5'].forEach(s=>$(s).value='');strength();render();
+};
+$('#q').oninput=render;
+
+function mk(t,txt,cls){const e=document.createElement(t);if(txt!=null)e.textContent=txt;if(cls)e.className=cls;return e}
+function fdate(t){if(!t)return'';try{return new Date(t).toLocaleDateString('ar-EG',{day:'numeric',month:'long',year:'numeric'})}catch(e){return''}}
+function render(){banner();
+ $('#cnt').textContent=items.length?items.length+' حساب محفوظ':'';
+ const q=$('#q').value.trim().toLowerCase(),box=$('#ls');box.textContent='';
+ chips();
+ const list=items.filter(x=>(x.n+' '+x.u).toLowerCase().includes(q)&&(cat==='__fav'?x.fav:(!cat||(x.c||'عام')===cat)));
+ if(!list.length){box.appendChild(mk('div','📭 '+(q?'مفيش نتايج للبحث.':(cat==='__fav'?'مفيش مفضلة لسه. اضغط ⭐ على أي حساب.':'مفيش حسابات لسه. ابدأ بإضافة حساب من فوق.')),'m empty'));return}
+ list.forEach(x=>{
+  const c=mk('div',null,'c i');
+  const hd=mk('div',null,'hd');
+  const av=mk('div',(x.n[0]||'?').toUpperCase(),'av');
+  av.style.background='linear-gradient(135deg,hsl('+([...x.n].reduce((a,ch)=>a+ch.charCodeAt(0),0)*37%360)+',60%,50%),hsl('+(([...x.n].reduce((a,ch)=>a+ch.charCodeAt(0),0)*37%360)+40)+',60%,40%))';
+  const tt=mk('div',null,'tt');
+  tt.appendChild(mk('b',x.n));
+  if(x.u)tt.appendChild(mk('span',x.u,'m pw'));
+  const tg=mk('span',null,'m');tg.appendChild(mk('span','#'+(x.c||'عام'),'tag'));
+  if(x.t)tg.appendChild(mk('span',' · آخر تعديل: '+fdate(x.t)));
+  tt.appendChild(tg);
+  const star=mk('button',x.fav?'★':'☆','star'+(x.fav?' on':''));
+  star.onclick=async()=>{x.fav=!x.fav;await seal();render()};
+  hd.append(av,tt,star);c.appendChild(hd);
+
+  const pw=mk('div','••••••••','pw pwl');
+  const row=mk('div',null,'r acts');
+  let shown=false;
+  const sh=mk('button','👁 إظهار','s');sh.onclick=()=>{shown=!shown;pw.textContent=shown?x.p:'••••••••';sh.textContent=shown?'إخفاء':'👁 إظهار'};
+  const cp=mk('button','📋 نسخ الباسورد','s');cp.onclick=async()=>{try{await navigator.clipboard.writeText(x.p);cp.textContent='تم ✓';setTimeout(()=>{navigator.clipboard.writeText('').catch(()=>{})},30000)}catch(e){shown=true;pw.textContent=x.p;cp.textContent='انسخه يدويًا'}setTimeout(()=>cp.textContent='📋 نسخ الباسورد',1500)};
+  row.append(sh,cp);
+  if(x.u){const cu=mk('button','نسخ الاسم','s');cu.onclick=async()=>{try{await navigator.clipboard.writeText(x.u);cu.textContent='تم ✓'}catch(e){}setTimeout(()=>cu.textContent='نسخ الاسم',1500)};row.append(cu)}
+  const ed=mk('button','✏️ تعديل','s');ed.onclick=()=>{eid=x.id;$('#a1').value=x.n;$('#a2').value=x.u;$('#a3').value=x.p;$('#a4').value=x.c||'عام';$('#a5').value=x.nt||'';strength();$('#ad').textContent='حفظ التعديل';$('#af').classList.add('open');$('#ta').textContent='−';scrollTo(0,0)};
+  const dl=mk('button','🗑 حذف','d');let arm=false;dl.onclick=async()=>{if(!arm){arm=true;dl.textContent='تأكيد الحذف؟';setTimeout(()=>{arm=false;dl.textContent='🗑 حذف'},3000);return}items=items.filter(y=>y.id!==x.id);await seal();render()};
+  row.append(ed,dl);
+  c.append(pw);
+  if(x.nt)c.appendChild(mk('div','📝 '+x.nt,'m'));
+  c.appendChild(row);
+  box.appendChild(c);
+ });
+}
+
+/* النسخ الاحتياطي */
+function saveOk(){sv('d',0);banner()}
+$('#dlb').onclick=async()=>{
+ const data=JSON.stringify(load()||'');
+ if(window.AndroidBackup&&window.AndroidBackup.save){
+  try{const r=window.AndroidBackup.save(data);if(r==='ok'){saveOk();$('#be').textContent='';$('#be').style.color='';$('#be').textContent='';alertBox('تم حفظ النسخة في مجلد التنزيلات ✓');return}}catch(e){}
+ }
+ try{
+  const b=new Blob([data],{type:'application/json'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(b);a.download='vault-backup.json';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),5000);saveOk();$('#be').textContent='';
+ }catch(e){$('#be').textContent='التحميل مش متاح هنا، استخدم "عرض النسخة" وانسخها يدويًا'}
+};
+function alertBox(t){const b=$('#bn');b.classList.remove('hide');b.textContent=t;setTimeout(banner,4000)}
+$('#ex').onclick=()=>{const t=$('#bk');t.classList.remove('hide');t.value=JSON.stringify(load()||'');t.select();try{navigator.clipboard.writeText(t.value)}catch(e){}saveOk();$('#be').textContent='انسخ النص ده (لو ماتنسخش لوحده) واحفظه في مكان آمن. مفيش حد يقدر يفتحه من غير الباسورد الرئيسي.'};
+$('#im').onclick=()=>{
+ const t=$('#bk');
+ if(t.classList.contains('hide')||!t.value.trim()){t.classList.remove('hide');t.value='';$('#be').textContent='الصق النسخة هنا واضغط استيراد تاني. تنبيه: ده هيستبدل الخزنة الحالية.';return}
+ try{
+  const v=JSON.parse(t.value);if(!v.s||!v.i||!v.d)throw 0;
+  mem=v;try{localStorage.setItem('vault',JSON.stringify(v))}catch(e){}
+  lock();$('#le').textContent='تم الاستيراد. افتح بالباسورد الرئيسي بتاع النسخة دي.';
+ }catch(e){$('#be').textContent='النسخة غير صالحة'}
+};
+function banner(){const n=gv('d'),b=$('#bn');b.classList.toggle('hide',!n);if(n)b.textContent='⚠️ فيه '+n+' تغيير لسه ماعملتلوش نسخة احتياطية. حمّل النسخة من الإعدادات تحت.'}
+$('#cpw').onclick=async()=>{const p=$('#np').value;if(p.length<12){$('#ce').textContent='12 حرف على الأقل';return}salt=crypto.getRandomValues(new Uint8Array(16));iter=600000;key=await derive(p,salt,iter);await seal();$('#np').value='';$('#ce').textContent='تم ✓ اعمل نسخة احتياطية جديدة';render()};
+
+/* فولدر الفورم */
+[['#af','#ta'],['#sf2','#ta2']].forEach(([f,t])=>{const el=$(f);el.querySelector('b').onclick=()=>{el.classList.toggle('open');$(t).textContent=el.classList.contains('open')?'−':'＋'}});
+$('#af').classList.remove('open');$('#ta').textContent='＋';
+
+/* الفئات */
+const CATS=['عام','سوشيال','بنوك','شغل','ألعاب','أخرى'];
+CATS.forEach(k=>{const o=document.createElement('option');o.textContent=k;$('#a4').appendChild(o)});
+function chips(){const b=$('#ch');b.textContent='';
+ [['','الكل'],['__fav','⭐ المفضلة'],...CATS.map(k=>[k,k])].forEach(([v,l])=>{
+  const e=mk('button',l,v===cat?'on':'');e.onclick=()=>{cat=v;render()};b.appendChild(e)})}
+
+/* قوة الباسورد */
+function strength(){const p=$('#a3').value;let s=0;if(p.length>=8)s++;if(p.length>=12)s++;if(/[a-z]/.test(p)&&/[A-Z]/.test(p))s++;if(/\d/.test(p))s++;if(/[^A-Za-z0-9]/.test(p))s++;const f=$('#sf');f.style.width=p?(s*20)+'%':'0';f.style.background=s<=2?'var(--dg)':s<4?'#f59e0b':'#16a34a'}
+$('#a3').oninput=strength;
+
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+try{const t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}
+$('#tg').onclick=()=>{const d=document.documentElement,cur=d.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'),nx=cur==='dark'?'light':'dark';d.dataset.theme=nx;try{localStorage.setItem('theme',nx)}catch(e){}};
+initLock();
+</script>
+</body>
+</html>
