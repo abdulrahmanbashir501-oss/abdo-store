@@ -1,0 +1,338 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>دومينو ABDO X | العب دومينو مجاناً في المتصفح</title>
+<meta name="description" content="لعبة دومينو من ABDO X: سحب وبلوك، ضد الكمبيوتر، نقط وجولات لحد الهدف. Play dominoes free in your browser.">
+<meta name="keywords" content="ABDO X, عبدو اكس, دومينو, dominoes, لعبة دومينو, عبدالرحمن بشير">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://abdulrahmanbashir501-oss.github.io/abdo-store/play/domino.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ABDO X">
+<meta property="og:title" content="دومينو ABDO X | العب دومينو مجاناً في المتصفح">
+<meta property="og:description" content="لعبة دومينو من ABDO X ضد الكمبيوتر بنظام السحب والبلوك.">
+<meta property="og:url" content="https://abdulrahmanbashir501-oss.github.io/abdo-store/play/domino.html">
+<meta name="twitter:card" content="summary">
+<!-- GSC-VERIFY -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:#09090D;color:#F5F5F7;font-family:Cairo,'Segoe UI',Tahoma,sans-serif}
+body{display:flex;flex-direction:column;align-items:center;padding:10px 10px 30px}
+a{color:#FF394B;text-decoration:none}
+.topbar{width:100%;max-width:720px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.topbar .brand{font-weight:900;font-size:20px}.topbar .brand b{color:#E32636}
+.back{display:inline-flex;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:6px 14px;border-radius:12px;color:#F5F5F7;font-weight:800;font-size:14px}
+.panel{width:100%;max-width:720px;background:linear-gradient(160deg,rgba(227,38,54,.10),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.10);border-top:3px solid #E32636;border-radius:20px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.5)}
+h1.title{text-align:center;font-size:clamp(30px,8vw,44px);font-weight:900;margin-bottom:4px}h1.title b{color:#E32636;text-shadow:0 0 24px rgba(227,38,54,.6)}
+.sub{text-align:center;color:#A8A8B8;font-size:14px;margin-bottom:16px}
+.opt{margin-bottom:14px}.opt .lbl{font-weight:800;font-size:14px;color:#A8A8B8;margin-bottom:8px}
+.choices{display:flex;gap:8px;flex-wrap:wrap}
+.choices button{flex:1;min-width:80px;padding:12px 8px;border:2px solid rgba(255,255,255,.15);border-radius:14px;background:rgba(255,255,255,.05);color:#F5F5F7;font:800 15px Cairo,sans-serif;cursor:pointer}
+.choices button.on{border-color:#E32636;background:rgba(227,38,54,.18);box-shadow:0 0 16px rgba(227,38,54,.35)}
+.start-btn{width:100%;padding:16px;border:none;border-radius:16px;background:linear-gradient(135deg,#E32636,#FF394B);color:#fff;font:900 20px Cairo,sans-serif;cursor:pointer;box-shadow:0 8px 30px rgba(227,38,54,.4)}
+.hidden{display:none!important}
+#game{width:100%;max-width:720px;display:flex;flex-direction:column;gap:10px}
+.scorebar{display:flex;gap:8px}
+.scorebar .sc{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:6px;text-align:center}
+.scorebar .num{font-size:24px;font-weight:900;color:#FFD166}.scorebar .who{font-size:12px;font-weight:800;color:#A8A8B8}
+.status{text-align:center;font-weight:800;font-size:16px;min-height:24px;color:#FFD166}
+.opp{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;min-height:44px}
+.back-tile{width:22px;height:44px;border-radius:5px;background:linear-gradient(160deg,#8C2F39,#4a1219);border:1px solid rgba(255,255,255,.25)}
+.table{min-height:150px;background:radial-gradient(ellipse at center,#1d4a2f,#0f2a1b);border:3px solid rgba(227,38,54,.4);border-radius:16px;padding:10px;overflow-x:auto;direction:ltr;display:flex;align-items:center}
+.chain{display:flex;align-items:center;gap:3px;margin:0 auto}
+.tile{display:flex;background:#F5F0E1;border-radius:6px;border:1px solid #888;box-shadow:0 2px 4px rgba(0,0,0,.5);flex:none}
+.tile.h{flex-direction:row;width:64px;height:32px}.tile.v{flex-direction:column;width:32px;height:64px}
+.half{flex:1;position:relative}
+.tile.h .half:first-child{border-right:2px solid #555}.tile.v .half:first-child{border-bottom:2px solid #555}
+.pip{position:absolute;width:5px;height:5px;border-radius:50%;background:#111;transform:translate(-50%,-50%)}
+.hand{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:6px}
+.hand .tile{cursor:pointer;transition:.12s}.hand .tile.ok{outline:3px solid #FFD166;transform:translateY(-6px)}
+.hand .tile.no{opacity:.55}
+.sides{display:flex;gap:8px;justify-content:center}
+.sides button,.controls button{padding:10px 14px;border:1px solid rgba(255,255,255,.15);border-radius:12px;background:rgba(255,255,255,.06);color:#F5F5F7;font:800 14px Cairo,sans-serif;cursor:pointer}
+.controls{display:flex;gap:8px}.controls button{flex:1}
+.pick{display:flex;gap:8px;justify-content:center}
+.pick button{padding:10px 18px;border:2px solid #FFD166;border-radius:12px;background:rgba(255,209,102,.12);color:#fff;font:900 15px Cairo,sans-serif;cursor:pointer}
+.modal{position:fixed;inset:0;background:rgba(5,5,10,.8);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal .box{background:linear-gradient(160deg,#17171f,#0E0E14);border:1px solid rgba(255,255,255,.14);border-top:3px solid #E32636;border-radius:20px;padding:22px;text-align:center;max-width:400px;width:100%}
+.modal h2{font-size:26px;font-weight:900;margin-bottom:6px}.modal p{color:#A8A8B8;margin-bottom:14px}
+.foot{color:#6E6E7E;font-size:12px;text-align:center}
+</style></head><body>
+<div class="topbar"><div class="brand">ABDO <b>X</b> · دومينو</div><a class="back" href="../index.html#games">← المتجر</a></div>
+
+<div class="panel" id="setup">
+  <h1 class="title">🁣 دومينو <b>ABDO X</b></h1>
+  <p class="sub">سحب وبلوك: خلّص طوبك الأول أو اقفل اللعب بأقل نقط. الكمبيوتر خصمك.</p>
+  <div class="opt"><div class="lbl">الهدف (مجموع النقط للفوز)</div>
+    <div class="choices" id="tgtRow"><button data-v="50">50</button><button data-v="100" class="on">100</button><button data-v="150">150</button></div></div>
+  <button class="start-btn" id="startBtn">ابدأ اللعب</button>
+  <p class="foot" style="margin-top:12px">اللعبة كلها في ملف واحد · موبايل وكمبيوتر</p>
+</div>
+
+<div id="game" class="hidden">
+  <div class="scorebar">
+    <div class="sc"><div class="num" id="s0">0</div><div class="who">أنت</div></div>
+    <div class="sc"><div class="num" id="sT">100</div><div class="who">الهدف</div></div>
+    <div class="sc"><div class="num" id="s1">0</div><div class="who">الكمبيوتر</div></div>
+  </div>
+  <div class="status" id="statusTxt"></div>
+  <div class="opp" id="opp"></div>
+  <div class="table"><div class="chain" id="chain"></div></div>
+  <div class="pick hidden" id="pick"><button data-s="l">◀ ناحية الشمال</button><button data-s="r">ناحية اليمين ▶</button></div>
+  <div class="hand" id="hand"></div>
+  <div class="controls"><button id="drawBtn">🂠 اسحب طوبة (<span id="bone">14</span>)</button><button id="passBtn">⏭ عدّي</button><button id="menuBtn">⚙ القائمة</button></div>
+  <p class="foot">دومينو ABDO X · 28 طوبة double-6</p>
+</div>
+
+<div class="modal hidden" id="endModal"><div class="box"><h2 id="endTitle"></h2><p id="endDesc"></p><button class="start-btn" id="nextBtn">كمل</button></div></div>
+
+<script>/* ABDO X Dominoes engine — classic draw dominoes (double-6 set), vs computer, scoring.
+   Players: 0 = human, 1 = computer. */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.DominoX = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  function fullSet() {
+    var t = [];
+    for (var a = 0; a <= 6; a++) for (var b = a; b <= 6; b++) t.push([a, b]);
+    return t;
+  }
+
+  function shuffle(arr, rng) {
+    rng = rng || Math.random;
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(rng() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  function pips(t) { return t[0] + t[1]; }
+  function handPips(hand) { return hand.reduce(function (s, t) { return s + pips(t); }, 0); }
+
+  /* state: {hands:[h0,h1], chain:[[a,b]...] placed in orientation, ends:[l,r]|null,
+             boneyard:[], turn:0|1, passes:0, scores:[s0,s1], target, round, over, roundOver, log} */
+  function newMatch(target, rng) {
+    var st = { target: target || 100, scores: [0, 0], round: 0, over: false, winner: -1, rng: rng || Math.random };
+    return st;
+  }
+
+  /* Start a round; returns round state. firstPlayer: 0|1|-1 (auto by highest double). */
+  function newRound(match, firstPlayer) {
+    var tiles = shuffle(fullSet(), match.rng);
+    var hands = [tiles.slice(0, 7), tiles.slice(7, 14)];
+    var boneyard = tiles.slice(14);
+    var turn;
+    if (firstPlayer === 0 || firstPlayer === 1) turn = firstPlayer;
+    else {
+      /* highest double starts; if none, highest pip tile */
+      turn = 0;
+      var bestRank = -1, bestPlayer = 0;
+      for (var pl = 0; pl < 2; pl++) {
+        for (var i = 0; i < hands[pl].length; i++) {
+          var t = hands[pl][i];
+          var rank = t[0] === t[1] ? 100 + t[0] : pips(t);
+          if (rank > bestRank) { bestRank = rank; bestPlayer = pl; }
+        }
+      }
+      turn = bestPlayer;
+    }
+    return {
+      hands: hands, chain: [], ends: null, boneyard: boneyard,
+      turn: turn, passes: 0, roundOver: false, roundWinner: -1, roundPoints: 0,
+      blocked: false, startPlayer: turn
+    };
+  }
+
+  function legalMoves(round, player) {
+    var hand = round.hands[player], out = [];
+    if (!round.ends) {
+      for (var i = 0; i < hand.length; i++) out.push({ idx: i, side: 'first' });
+      return out;
+    }
+    for (var j = 0; j < hand.length; j++) {
+      var t = hand[j];
+      var l = t[0] === round.ends[0] || t[1] === round.ends[0];
+      var r = t[0] === round.ends[1] || t[1] === round.ends[1];
+      if (l) out.push({ idx: j, side: 'l' });
+      if (r) out.push({ idx: j, side: 'r' });
+    }
+    return out;
+  }
+
+  /* play tile; returns true on success */
+  function playTile(round, player, idx, side) {
+    var hand = round.hands[player];
+    if (idx < 0 || idx >= hand.length) return false;
+    var t = hand[idx];
+    if (!round.ends) {
+      round.chain.push([t[0], t[1]]);
+      round.ends = [t[0], t[1]];
+    } else if (side === 'l') {
+      if (t[1] === round.ends[0]) round.chain.unshift([t[0], t[1]]);
+      else if (t[0] === round.ends[0]) round.chain.unshift([t[1], t[0]]);
+      else return false;
+      round.ends[0] = round.chain[0][0];
+    } else {
+      if (t[0] === round.ends[1]) round.chain.push([t[0], t[1]]);
+      else if (t[1] === round.ends[1]) round.chain.push([t[1], t[0]]);
+      else return false;
+      round.ends[1] = round.chain[round.chain.length - 1][1];
+    }
+    hand.splice(idx, 1);
+    round.passes = 0;
+    checkRoundEnd(round);
+    if (!round.roundOver) round.turn = 1 - player;
+    return true;
+  }
+
+  /* draw one tile from boneyard; returns tile or null */
+  function drawTile(round, player) {
+    if (!round.boneyard.length) return null;
+    var t = round.boneyard.pop();
+    round.hands[player].push(t);
+    return t;
+  }
+
+  /* player passes (only legal when no moves and boneyard empty) */
+  function pass(round, player) {
+    if (legalMoves(round, player).length > 0 || round.boneyard.length > 0) return false;
+    round.passes++;
+    checkRoundEnd(round);
+    if (!round.roundOver) round.turn = 1 - player;
+    return true;
+  }
+
+  function checkRoundEnd(round) {
+    /* domino: a player emptied hand */
+    for (var pl = 0; pl < 2; pl++) {
+      if (round.hands[pl].length === 0) {
+        round.roundOver = true;
+        round.roundWinner = pl;
+        round.roundPoints = handPips(round.hands[1 - pl]);
+        return;
+      }
+    }
+    /* blocked: both passed and boneyard empty (passes>=2 means both couldn't play) */
+    if (round.passes >= 2 && round.boneyard.length === 0) {
+      var p0 = handPips(round.hands[0]), p1 = handPips(round.hands[1]);
+      round.roundOver = true;
+      round.blocked = true;
+      if (p0 === p1) { round.roundWinner = -1; round.roundPoints = 0; }
+      else {
+        round.roundWinner = p0 < p1 ? 0 : 1;
+        round.roundPoints = Math.abs(p0 - p1);
+      }
+    }
+  }
+
+  /* apply round result to match; returns match winner or -1 */
+  function finishRound(match, round) {
+    if (round.roundWinner >= 0) match.scores[round.roundWinner] += round.roundPoints;
+    match.round++;
+    if (match.scores[0] >= match.target || match.scores[1] >= match.target) {
+      match.over = true;
+      match.winner = match.scores[0] === match.scores[1] ? -1 : (match.scores[0] > match.scores[1] ? 0 : 1);
+    }
+    return match.over ? match.winner : -1;
+  }
+
+  /* computer move: greedy — highest-pip legal tile, prefer keeping variety */
+  function aiMove(round, player, rng) {
+    var moves = legalMoves(round, player);
+    if (!moves.length) return null;
+    rng = rng || Math.random;
+    var hand = round.hands[player];
+    var best = null, bestScore = -Infinity;
+    for (var i = 0; i < moves.length; i++) {
+      var t = hand[moves[i].idx];
+      var s = pips(t) * 10 + (t[0] === t[1] ? 2 : 0) + rng();
+      if (s > bestScore) { bestScore = s; best = moves[i]; }
+    }
+    return best;
+  }
+
+  return {
+    fullSet: fullSet, pips: pips, handPips: handPips,
+    newMatch: newMatch, newRound: newRound, legalMoves: legalMoves,
+    playTile: playTile, drawTile: drawTile, pass: pass,
+    finishRound: finishRound, aiMove: aiMove
+  };
+});
+</script>
+<script>
+(function(){
+'use strict';
+var P = {0:[],1:[[.5,.5]],2:[[.25,.25],[.75,.75]],3:[[.25,.25],[.5,.5],[.75,.75]],4:[[.25,.25],[.75,.25],[.25,.75],[.75,.75]],5:[[.25,.25],[.75,.25],[.5,.5],[.25,.75],[.75,.75]],6:[[.25,.2],[.75,.2],[.25,.5],[.75,.5],[.25,.8],[.75,.8]]};
+var match, round, target = 100, locked = false, pending = null;
+function $(i){return document.getElementById(i)}
+function tileEl(t, orient){
+  var d = document.createElement('div'); d.className = 'tile ' + orient;
+  [t[0],t[1]].forEach(function(n){
+    var h = document.createElement('div'); h.className='half';
+    P[n].forEach(function(p){ var s=document.createElement('span'); s.className='pip'; s.style.left=(p[0]*100)+'%'; s.style.top=(p[1]*100)+'%'; h.appendChild(s); });
+    d.appendChild(h);
+  });
+  return d;
+}
+$('tgtRow').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;this.querySelectorAll('button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');target=parseInt(b.getAttribute('data-v'),10);});
+$('startBtn').addEventListener('click',function(){$('setup').classList.add('hidden');$('game').classList.remove('hidden');match=DominoX.newMatch(target);$('sT').textContent=target;startRound();});
+$('menuBtn').addEventListener('click',function(){$('game').classList.add('hidden');$('setup').classList.remove('hidden');$('endModal').classList.add('hidden');});
+function startRound(){
+  round = DominoX.newRound(match,-1); locked=false; pending=null; $('endModal').classList.add('hidden');
+  say(round.turn===0?'أنت تبدأ':'الكمبيوتر يبدأ'); render(); if(round.turn===1) aiTurn();
+}
+function say(m){$('statusTxt').textContent=m}
+function myMoves(){return DominoX.legalMoves(round,0)}
+function render(){
+  $('s0').textContent=match.scores[0]; $('s1').textContent=match.scores[1];
+  var opp=$('opp'); opp.innerHTML=''; for(var i=0;i<round.hands[1].length;i++){var b=document.createElement('div');b.className='back-tile';opp.appendChild(b);}
+  var ch=$('chain'); ch.innerHTML=''; round.chain.forEach(function(t){ch.appendChild(tileEl(t,t[0]===t[1]?'v':'h'));});
+  var mv=myMoves(), okIdx={}; mv.forEach(function(m){okIdx[m.idx]=1});
+  var hand=$('hand'); hand.innerHTML='';
+  round.hands[0].forEach(function(t,i){
+    var el=tileEl(t,'v'); el.classList.add(round.turn===0&&okIdx[i]?'ok':'no');
+    el.addEventListener('click',function(){onTile(i)}); hand.appendChild(el);
+  });
+  $('bone').textContent=round.boneyard.length;
+  var mine=round.turn===0&&!locked;
+  $('drawBtn').disabled=!(mine&&mv.length===0&&round.boneyard.length>0);
+  $('passBtn').disabled=!(mine&&mv.length===0&&round.boneyard.length===0);
+  $('pick').classList.add('hidden');
+}
+function onTile(i){
+  if(round.turn!==0||locked) return;
+  var ms=myMoves().filter(function(m){return m.idx===i});
+  if(!ms.length){say('الطوبة دي مش مناسبة');return;}
+  if(ms.length===1||ms[0].side==='first'){play(i,ms[0].side);return;}
+  pending=i; $('pick').classList.remove('hidden');
+}
+$('pick').addEventListener('click',function(e){var b=e.target.closest('button');if(!b||pending===null)return;var i=pending;pending=null;play(i,b.getAttribute('data-s'));});
+function play(i,side){ if(!DominoX.playTile(round,0,i,side)) return; after(); }
+$('drawBtn').addEventListener('click',function(){ if(round.turn!==0||locked)return; DominoX.drawTile(round,0); say('سحبت طوبة'); render(); });
+$('passBtn').addEventListener('click',function(){ if(round.turn!==0||locked)return; if(DominoX.pass(round,0)){ say('عدّيت'); after(); } });
+function after(){ render(); if(round.roundOver){endRound();return;} if(round.turn===1) aiTurn(); else say('دورك'); }
+function aiTurn(){
+  locked=true; say('الكمبيوتر بيلعب...'); render();
+  setTimeout(function(){
+    var mv=DominoX.aiMove(round,1);
+    while(!mv && round.boneyard.length){ DominoX.drawTile(round,1); mv=DominoX.aiMove(round,1); }
+    locked=false;
+    if(mv){ DominoX.playTile(round,1,mv.idx,mv.side); }
+    else { DominoX.pass(round,1); say('الكمبيوتر عدّى'); }
+    after();
+  },700);
+}
+function endRound(){
+  locked=true;
+  var w=round.roundWinner,pts=round.roundPoints,t,d;
+  if(w===-1){t='تعادل';d='القفلة بنفس النقط، محدش خد نقط.';}
+  else{ t=(w===0?'كسبت الجولة 🏆':'الكمبيوتر كسب الجولة 🤖'); d=(round.blocked?'اللعب اتقفل. ':'خلّص طوبه. ')+(w===0?'خدت ':'خد ')+pts+' نقطة.'; }
+  var mw=DominoX.finishRound(match,round); $('s0').textContent=match.scores[0]; $('s1').textContent=match.scores[1];
+  if(match.over){ t=(match.winner===0?'كسبت المباراة! 🏆':match.winner===1?'الكمبيوتر كسب المباراة 🤖':'تعادل في المباراة'); d+=' النتيجة '+match.scores[0]+' - '+match.scores[1]; $('nextBtn').textContent='مباراة جديدة'; }
+  else $('nextBtn').textContent='الجولة اللي بعدها';
+  $('endTitle').textContent=t; $('endDesc').textContent=d; $('endModal').classList.remove('hidden');
+}
+$('nextBtn').addEventListener('click',function(){ if(match.over){match=DominoX.newMatch(target);} startRound(); });
+})();
+</script>
+</body></html>

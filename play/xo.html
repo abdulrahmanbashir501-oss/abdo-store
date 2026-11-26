@@ -1,0 +1,300 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>إكس أو ABDO X | العب XO مجاناً في المتصفح</title>
+<meta name="description" content="لعبة إكس أو (XO) من ABDO X: ضد الكمبيوتر بمستويين (سهل وصعب لا يُهزم) أو لاعبين على نفس الجهاز. Play tic tac toe free in your browser.">
+<meta name="keywords" content="ABDO X, عبدو اكس, إكس أو, xo, tic tac toe, لعبة اكس او, عبدالرحمن بشير">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://abdulrahmanbashir501-oss.github.io/abdo-store/play/xo.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ABDO X">
+<meta property="og:title" content="إكس أو ABDO X | العب XO مجاناً في المتصفح">
+<meta property="og:description" content="لعبة إكس أو من ABDO X: ضد كمبيوتر لا يُهزم في المستوى الصعب أو مع صاحبك.">
+<meta property="og:url" content="https://abdulrahmanbashir501-oss.github.io/abdo-store/play/xo.html">
+<meta name="twitter:card" content="summary">
+<!-- GSC-VERIFY -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:#09090D;color:#F5F5F7;font-family:Cairo,'Segoe UI',Tahoma,sans-serif}
+body{display:flex;flex-direction:column;align-items:center;padding:10px 10px 30px}
+a{color:#FF394B;text-decoration:none}
+.topbar{width:100%;max-width:520px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.topbar .brand{font-weight:900;font-size:20px}
+.topbar .brand b{color:#E32636}
+.back{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:6px 14px;border-radius:12px;color:#F5F5F7;font-weight:800;font-size:14px}
+.back:hover{background:rgba(227,38,54,.18);border-color:#E32636}
+.panel{width:100%;max-width:520px;background:linear-gradient(160deg,rgba(227,38,54,.10),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.10);border-top:3px solid #E32636;border-radius:20px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.5)}
+h1.title{text-align:center;font-size:clamp(30px,8vw,44px);font-weight:900;margin-bottom:4px}
+h1.title b{color:#E32636;text-shadow:0 0 24px rgba(227,38,54,.6)}
+.sub{text-align:center;color:#A8A8B8;font-size:14px;margin-bottom:16px}
+.opt{margin-bottom:14px}
+.opt .lbl{font-weight:800;font-size:14px;color:#A8A8B8;margin-bottom:8px}
+.choices{display:flex;gap:8px;flex-wrap:wrap}
+.choices button{flex:1;min-width:80px;padding:12px 8px;border:2px solid rgba(255,255,255,.15);border-radius:14px;background:rgba(255,255,255,.05);color:#F5F5F7;font:800 15px Cairo,sans-serif;cursor:pointer;transition:.15s}
+.choices button:hover{border-color:#FF394B}
+.choices button.on{border-color:#E32636;background:rgba(227,38,54,.18);box-shadow:0 0 16px rgba(227,38,54,.35)}
+.start-btn{width:100%;padding:16px;border:none;border-radius:16px;background:linear-gradient(135deg,#E32636,#FF394B);color:#fff;font:900 20px Cairo,sans-serif;cursor:pointer;box-shadow:0 8px 30px rgba(227,38,54,.4);transition:.15s}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(227,38,54,.55)}
+.hidden{display:none!important}
+#game{width:100%;max-width:520px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.scorebar{width:100%;display:flex;gap:8px}
+.scorebar .sc{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:8px;text-align:center}
+.scorebar .sc .num{font-size:26px;font-weight:900;color:#FFD166}
+.scorebar .sc .who{font-size:13px;font-weight:800;color:#A8A8B8}
+.status{width:100%;text-align:center;font-weight:800;font-size:17px;min-height:26px;color:#FFD166}
+#grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:420px;aspect-ratio:1}
+.cell{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.12);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:clamp(48px,18vw,84px);font-weight:900;cursor:pointer;transition:.15s;user-select:none;-webkit-user-select:none}
+.cell:hover{border-color:rgba(227,38,54,.6);background:rgba(227,38,54,.08)}
+.cell.x{color:#FF394B;text-shadow:0 0 24px rgba(255,57,75,.55)}
+.cell.o{color:#F5F5F7;text-shadow:0 0 24px rgba(255,255,255,.35)}
+.cell.win{border-color:#FFD166;background:rgba(255,209,102,.14);animation:winp .5s}
+.cell.full{cursor:default}
+@keyframes winp{0%{transform:scale(.9)}60%{transform:scale(1.05)}100%{transform:scale(1)}}
+.controls{display:flex;gap:8px;width:100%}
+.controls button{flex:1;padding:12px;border:1px solid rgba(255,255,255,.15);border-radius:12px;background:rgba(255,255,255,.06);color:#F5F5F7;font:800 15px Cairo,sans-serif;cursor:pointer;transition:.15s}
+.controls button:hover{border-color:#E32636;background:rgba(227,38,54,.15)}
+.foot{margin-top:6px;color:#6E6E7E;font-size:12px;text-align:center}
+.thinking{display:inline-block;width:10px;height:10px;border-radius:50%;background:#FFD166;margin-inline-start:6px;animation:blink .6s infinite alternate}
+@keyframes blink{from{opacity:.2}to{opacity:1}}
+</style></head><body>
+<div class="topbar">
+  <div class="brand">ABDO <b>X</b> · إكس أو</div>
+  <a class="back" href="../index.html#games">← المتجر</a>
+</div>
+
+<div class="panel" id="setup">
+  <h1 class="title">❌⭕ إكس أو <b>ABDO X</b></h1>
+  <p class="sub">الكلاسيكية اللي محدش يمل منها — المستوى الصعب مستحيل تكسبه 😈</p>
+  <div class="opt">
+    <div class="lbl">طريقة اللعب</div>
+    <div class="choices" id="modeRow">
+      <button data-v="ai" class="on">ضد الكمبيوتر</button>
+      <button data-v="pvp">لاعبين</button>
+    </div>
+  </div>
+  <div class="opt" id="lvlWrap">
+    <div class="lbl">المستوى</div>
+    <div class="choices" id="lvlRow">
+      <button data-v="easy">سهل 😊</button>
+      <button data-v="hard" class="on">صعب 😈</button>
+    </div>
+  </div>
+  <div class="opt" id="markWrap">
+    <div class="lbl">العب بـ</div>
+    <div class="choices" id="markRow">
+      <button data-v="X" class="on">❌ (تبدأ)</button>
+      <button data-v="O">⭕</button>
+    </div>
+  </div>
+  <button class="start-btn" id="startBtn">ابدأ اللعب</button>
+  <p class="foot">اللعبة كلها في ملف واحد · موبايل وكمبيوتر</p>
+</div>
+
+<div id="game" class="hidden">
+  <div class="scorebar">
+    <div class="sc"><div class="num" id="scX">0</div><div class="who" id="whoX">أنت ❌</div></div>
+    <div class="sc"><div class="num" id="scD">0</div><div class="who">تعادل</div></div>
+    <div class="sc"><div class="num" id="scO">0</div><div class="who" id="whoO">الكمبيوتر ⭕</div></div>
+  </div>
+  <div class="status" id="statusTxt"></div>
+  <div id="grid"></div>
+  <div class="controls">
+    <button id="roundBtn">🔄 جولة جديدة</button>
+    <button id="menuBtn">⚙ القائمة</button>
+  </div>
+  <p class="foot">إكس أو ABDO X · المستوى الصعب لا يُهزم (متأكدين بالحسابات 😄)</p>
+</div>
+
+<script>/* ABDO X XO (tic tac toe) engine — unbeatable minimax + easy random. */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.XOX = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  var LINES = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+  ];
+
+  function newBoard() { return [null, null, null, null, null, null, null, null, null]; }
+
+  function winner(b) {
+    for (var i = 0; i < LINES.length; i++) {
+      var L = LINES[i];
+      if (b[L[0]] && b[L[0]] === b[L[1]] && b[L[1]] === b[L[2]]) {
+        return { who: b[L[0]], line: L.slice() };
+      }
+    }
+    if (b.every(function (c) { return c !== null; })) return { who: 'draw', line: null };
+    return null;
+  }
+
+  function legalCells(b) {
+    var out = [];
+    for (var i = 0; i < 9; i++) if (!b[i]) out.push(i);
+    return out;
+  }
+
+  /* minimax: score from `me` perspective. +10 win, -10 loss, 0 draw (depth-adjusted). */
+  function minimax(b, me, turn, depth) {
+    var w = winner(b);
+    if (w) {
+      if (w.who === 'draw') return 0;
+      return w.who === me ? 10 - depth : depth - 10;
+    }
+    var cells = legalCells(b), best, i;
+    if (turn === me) {
+      best = -Infinity;
+      for (i = 0; i < cells.length; i++) {
+        b[cells[i]] = turn;
+        best = Math.max(best, minimax(b, me, turn === 'X' ? 'O' : 'X', depth + 1));
+        b[cells[i]] = null;
+      }
+    } else {
+      best = Infinity;
+      for (i = 0; i < cells.length; i++) {
+        b[cells[i]] = turn;
+        best = Math.min(best, minimax(b, me, turn === 'X' ? 'O' : 'X', depth + 1));
+        b[cells[i]] = null;
+      }
+    }
+    return best;
+  }
+
+  /* bestMove(b, me, level, rng): level 'easy' | 'hard' */
+  function bestMove(b, me, level, rng) {
+    rng = rng || Math.random;
+    var cells = legalCells(b);
+    if (!cells.length) return -1;
+    if (level === 'easy') return cells[Math.floor(rng() * cells.length)];
+    var best = -Infinity, bestCells = [];
+    for (var i = 0; i < cells.length; i++) {
+      b[cells[i]] = me;
+      var s = minimax(b, me, me === 'X' ? 'O' : 'X', 1);
+      b[cells[i]] = null;
+      if (s > best) { best = s; bestCells = [cells[i]]; }
+      else if (s === best) bestCells.push(cells[i]);
+    }
+    return bestCells[Math.floor(rng() * bestCells.length)];
+  }
+
+  return { newBoard: newBoard, winner: winner, legalCells: legalCells, bestMove: bestMove, minimax: minimax, LINES: LINES };
+});
+</script>
+<script>
+(function(){
+'use strict';
+var grid = document.getElementById('grid');
+var statusTxt = document.getElementById('statusTxt');
+var cfg = { mode:'ai', level:'hard', human:'X' };
+var b = XOX.newBoard(), turn = 'X', over = false, thinking = false;
+var scores = { X:0, O:0, D:0 };
+var cells = [];
+
+function bindRow(id, cb){
+  var row = document.getElementById(id);
+  row.addEventListener('click', function(e){
+    var bt = e.target.closest('button'); if(!bt) return;
+    row.querySelectorAll('button').forEach(function(x){ x.classList.remove('on'); });
+    bt.classList.add('on');
+    cb(bt.getAttribute('data-v'));
+  });
+}
+bindRow('modeRow', function(v){
+  cfg.mode = v;
+  document.getElementById('lvlWrap').classList.toggle('hidden', v!=='ai');
+  document.getElementById('markWrap').classList.toggle('hidden', v!=='ai');
+});
+bindRow('lvlRow', function(v){ cfg.level = v; });
+bindRow('markRow', function(v){ cfg.human = v; });
+
+for (var i=0;i<9;i++){
+  (function(idx){
+    var c = document.createElement('div');
+    c.className = 'cell';
+    c.addEventListener('click', function(){ onTap(idx); });
+    grid.appendChild(c); cells.push(c);
+  })(i);
+}
+
+document.getElementById('startBtn').addEventListener('click', function(){
+  document.getElementById('setup').classList.add('hidden');
+  document.getElementById('game').classList.remove('hidden');
+  document.getElementById('whoX').textContent = cfg.mode==='ai' ? (cfg.human==='X'?'أنت ❌':'الكمبيوتر ❌') : 'اللاعب ❌';
+  document.getElementById('whoO').textContent = cfg.mode==='ai' ? (cfg.human==='O'?'أنت ⭕':'الكمبيوتر ⭕') : 'اللاعب ⭕';
+  scores = {X:0,O:0,D:0}; paintScores();
+  newRound();
+});
+document.getElementById('roundBtn').addEventListener('click', newRound);
+document.getElementById('menuBtn').addEventListener('click', function(){
+  document.getElementById('game').classList.add('hidden');
+  document.getElementById('setup').classList.remove('hidden');
+});
+
+function newRound(){
+  b = XOX.newBoard(); turn = 'X'; over = false; thinking = false;
+  cells.forEach(function(c){ c.textContent=''; c.className='cell'; });
+  say();
+  maybeAI();
+}
+
+function say(msg){
+  if (msg){ statusTxt.innerHTML = msg; return; }
+  if (cfg.mode==='ai'){
+    statusTxt.innerHTML = turn===cfg.human ? 'دورك يا بطل 💪' : 'الكمبيوتر بيفكر<span class="thinking"></span>';
+  } else {
+    statusTxt.textContent = 'دور ' + (turn==='X'?'❌':'⭕');
+  }
+}
+
+function onTap(idx){
+  if (over || thinking || b[idx]) return;
+  if (cfg.mode==='ai' && turn!==cfg.human) return;
+  place(idx);
+}
+
+function place(idx){
+  b[idx] = turn;
+  cells[idx].textContent = turn==='X'?'❌':'⭕';
+  cells[idx].classList.add(turn.toLowerCase(),'full');
+  var w = XOX.winner(b);
+  if (w){ finish(w); return; }
+  turn = turn==='X'?'O':'X';
+  say();
+  maybeAI();
+}
+
+function maybeAI(){
+  if (over || cfg.mode!=='ai' || turn===cfg.human) return;
+  thinking = true; say();
+  setTimeout(function(){
+    var mv = XOX.bestMove(b, turn, cfg.level);
+    thinking = false;
+    if (mv>=0) place(mv);
+  }, 400);
+}
+
+function finish(w){
+  over = true;
+  if (w.who==='draw'){
+    scores.D++; say('تعادل 🤝');
+  } else {
+    scores[w.who]++;
+    w.line.forEach(function(i){ cells[i].classList.add('win'); });
+    if (cfg.mode==='ai'){
+      say(w.who===cfg.human ? 'كسبت! 🏆' : 'الكمبيوتر كسب 🤖' + (cfg.level==='hard'?' — قولناك صعب 😈':''));
+    } else {
+      say('كسب ' + (w.who==='X'?'❌':'⭕') + ' 🏆');
+    }
+  }
+  paintScores();
+}
+
+function paintScores(){
+  document.getElementById('scX').textContent = scores.X;
+  document.getElementById('scO').textContent = scores.O;
+  document.getElementById('scD').textContent = scores.D;
+}
+})();
+</script>
+</body></html>
