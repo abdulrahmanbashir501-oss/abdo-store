@@ -7,6 +7,8 @@
 <title>LIFE OS</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg">
+<script src="../js/abdox-config.js"></script>
+<script src="../js/abdox-cloud.js"></script>
 <style>
 :root{--bg:#0d0f17;--bg2:#141826;--card:#1a1f31;--card2:#222840;--line:#2b3252;--tx:#eceff8;--mu:#8f98b8;--ac:#7c8cff;--ac2:#4fd1c5;--ok:#46d19a;--warn:#f5b84b;--bad:#ef6a7a;--r:16px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -101,7 +103,7 @@ lang:"اللغة",backup:"النسخ الاحتياطي",export:"تصدير نس
 aiNote:"بدون مفتاح، المساعد يعمل محليًا ويحلل بياناتك. مع مفتاح، يستخدم نموذجًا خارجيًا وتُرسل له ملخصات بياناتك. المفتاح يبقى على جهازك فقط.",
 saved:"تم الحفظ",imported:"تم الاستيراد",bad:"ملف غير صالح",levelUp:"مستوى جديد!",
 fast:"إضافة سريعة",greet:"أهلاً",overdue:"متأخر",noPlan:"أضف مواد أولًا",planDone:"تم توليد الجدول",
-exams:"امتحانات",install:"يمكنك تثبيته على الشاشة الرئيسية من قائمة المتصفح",autoBackup:"آخر نسخة تصدير",never:"لم يتم بعد",wipeC:"سيتم مسح كل شيء نهائيًا. تأكيد؟"},
+cloud:"مزامنة جوجل درايف",gClient:"Google Client ID",gSignIn:"تسجيل الدخول بجوجل",gSyncNow:"مزامنة الآن",gSignOut:"تسجيل الخروج",gHelp:"بياناتك تتحفظ في Google Drive الخاص بك في مكان مخفي، ولا يراها أحد غيرك. التطبيق يعمل أوفلاين وبيزامن لما تسجل الدخول.",needClient:"تسجيل الدخول بجوجل لسه ما اتفعلش على الموقع",gOnlyStore:"المزامنة متاحة من لينك المتجر",offline:"لا يوجد اتصال بالإنترنت",synced:"تمت المزامنة",pulled:"تم تحميل بياناتك من Drive",pushed:"تم حفظ بياناتك في Drive",gNeed:"سجّل الدخول للمزامنة",gOn:"متصل",gBusy:"جارٍ المزامنة...",gErr:"خطأ في المزامنة",gLast:"آخر مزامنة",exams:"امتحانات",install:"يمكنك تثبيته على الشاشة الرئيسية من قائمة المتصفح",autoBackup:"آخر نسخة تصدير",never:"لم يتم بعد",wipeC:"سيتم مسح كل شيء نهائيًا. تأكيد؟"},
 en:{dash:"Home",tasks:"Tasks",study:"Study",projects:"Projects",self:"Growth",ai:"Assistant",stats:"Stats",settings:"Settings",
 today:"Today",pending:"Due today",completion:"Completion",level:"Level",xp:"XP",add:"Add",edit:"Edit",del:"Delete",save:"Save",cancel:"Cancel",
 title:"Title",date:"Date",time:"Time",prio:"Priority",high:"High",mid:"Medium",low:"Low",none:"Nothing here yet",confirmDel:"Delete this?",
@@ -119,11 +121,11 @@ lang:"Language",backup:"Backup",export:"Export backup",import:"Import backup",wi
 aiNote:"Without a key the assistant runs locally and analyses your data. With a key it uses an external model and sends summaries of your data. The key stays on your device.",
 saved:"Saved",imported:"Imported",bad:"Invalid file",levelUp:"Level up!",
 fast:"Quick add",greet:"Hello",overdue:"Overdue",noPlan:"Add subjects first",planDone:"Plan generated",
-exams:"Exams",install:"You can install it to your home screen from the browser menu",autoBackup:"Last export",never:"Never",wipeC:"This erases everything permanently. Confirm?"}
+cloud:"Google Drive sync",gClient:"Google Client ID",gSignIn:"Sign in with Google",gSyncNow:"Sync now",gSignOut:"Sign out",gHelp:"Your data is stored in your own Google Drive in a hidden app folder; nobody else can see it. The app works offline and syncs when you sign in.",needClient:"Google sign-in is not enabled on the site yet",gOnlyStore:"Sync is available from the store link",offline:"No internet connection",synced:"Synced",pulled:"Loaded your data from Drive",pushed:"Saved your data to Drive",gNeed:"Sign in to sync",gOn:"Connected",gBusy:"Syncing...",gErr:"Sync error",gLast:"Last sync",exams:"Exams",install:"You can install it to your home screen from the browser menu",autoBackup:"Last export",never:"Never",wipeC:"This erases everything permanently. Confirm?"}
 };
 const IC={dash:"🏠",tasks:"✅",study:"📚",projects:"💻",self:"🌱",ai:"🤖",stats:"📊",settings:"⚙️"};
 /* ============ storage (IndexedDB, localStorage fallback) ============ */
-const DEF=()=>({v:1,settings:{lang:"ar",sleepTarget:8,aiKey:"",aiUrl:"https://api.openai.com/v1/chat/completions",aiModel:"gpt-4o-mini",lastExport:null,dailyMin:120,planDays:7},
+const DEF=()=>({v:1,settings:{lang:"ar",sleepTarget:8,aiKey:"",aiUrl:"https://api.openai.com/v1/chat/completions",aiModel:"gpt-4o-mini",lastExport:null,dailyMin:120,planDays:7},updatedAt:0,
 tasks:[],subjects:[],lessons:[],assigns:[],sessions:[],plan:[],projects:[],habits:[],sleep:[],goals:[],xp:0,log:[],chat:[]});
 let S=DEF();
 const DBN="lifeos",STO="kv";
@@ -134,7 +136,7 @@ async function load(){
 }
 function merge(d,v){const o=Object.assign({},d,v);o.settings=Object.assign({},d.settings,v.settings||{});return o}
 let saveT=null;
-function save(){clearTimeout(saveT);saveT=setTimeout(flush,150)}
+function save(){S.updatedAt=Math.max(Date.now(),(S.updatedAt||0)+1);clearTimeout(saveT);saveT=setTimeout(flush,150);cloudSchedule()}
 async function flush(){
  const snap=JSON.parse(JSON.stringify(S));
  try{const db=await idb();await new Promise((res,rej)=>{const tx=db.transaction(STO,"readwrite");tx.objectStore(STO).put(snap,"state");tx.oncomplete=res;tx.onerror=rej})}
@@ -198,7 +200,7 @@ function bind(root){
  root.onchange=e=>{const el=e.target.closest("[data-c]");if(el&&A[el.dataset.c])A[el.dataset.c](el.dataset.id,el.value,el)};
  root.querySelectorAll("form[data-f]").forEach(f=>f.onsubmit=e=>{e.preventDefault();A[f.dataset.f](f)});
 }
-function head(title,extra=""){return `<div class="top"><h1>${title}</h1>${extra}<span class="pill">⭐ ${t("level")} ${num(lvl(S.xp))} · ${num(S.xp)} ${t("xp")}</span></div>`}
+function head(title,extra=""){return `<div class="top"><h1>${title}</h1>${extra}${clientId()?`<button class="pill cloudpill" data-a="cloud" style="cursor:pointer">${cloudLabel()}</button>`:""}<span class="pill">⭐ ${t("level")} ${num(lvl(S.xp))} · ${num(S.xp)} ${t("xp")}</span></div>`}
 /* ============ data helpers ============ */
 const subj=id=>S.subjects.find(s=>s.id===id);
 const subjName=id=>(subj(id)||{}).name||t("noSubject");
@@ -371,6 +373,7 @@ R.settings=()=>{
  <div class="card"><h3>${t("backup")}</h3><div class="mu" style="margin-bottom:10px">${t("autoBackup")}: ${s.lastExport?new Date(s.lastExport).toLocaleString():t("never")}</div>
  <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-a="exp">${t("export")}</button><button class="btn sec" data-a="imp">${t("import")}</button><button class="btn bad" data-a="wipe">${t("wipe")}</button></div><input type="file" id="impF" accept=".json,application/json" hidden></div>
  <div class="card"><h3>${t("aiCfg")}</h3><div class="mu">${t("aiNote")}</div><label>${t("aiKey")}</label><input type="password" value="${esc(s.aiKey)}" data-c="aiKey" autocomplete="off"><label>${t("aiUrl")}</label><input value="${esc(s.aiUrl)}" data-c="aiUrl"><label>${t("aiModel")}</label><input value="${esc(s.aiModel)}" data-c="aiModel"></div>
+ <div class="card"><h3>☁ ${t("cloud")}</h3><div class="mu">${t("gHelp")}</div><div class="mu" id="cloudStatus" style="margin:8px 0">${cloudLabel()}</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn" data-a="cloudIn">${t("gSignIn")}</button><button class="btn sec" data-a="cloudNow">${t("gSyncNow")}</button><button class="btn sec" data-a="cloudOut">${t("gSignOut")}</button></div></div>
  <div class="card"><div class="mu">${t("install")}</div></div></div>`;
 };
 /* ============ actions ============ */
@@ -530,12 +533,42 @@ async function aiAsk(q){
 }
 A.aiSend=f=>{const q=f.q.value;f.q.value="";aiAsk(q)};
 A.aiQ=(id,x)=>aiAsk(x);
+/* ============ ABDO X cloud (shared Google sign-in, data in the user's own Drive appData) ============ */
+const HAS=()=>!!window.ABDOX;
+let CS=null;
+function clientId(){return HAS()&&ABDOX.auth.configured()?"1":""}
+function cloudOK(){return HAS()&&ABDOX.auth.isSignedIn()}
+function cloudLabel(){
+ if(!HAS())return "☁ "+t("gOnlyStore");
+ const st=ABDOX.sync.status("lifeos"),u=ABDOX.auth.user();
+ if(!cloudOK())return "☁ "+t("gNeed");
+ if(st.s==="busy")return "☁ "+t("gBusy");
+ if(st.s==="err")return "☁ ⚠ "+t("gErr")+(st.msg?" ("+st.msg+")":"");
+ return "☁ ✓ "+(u&&u.email?u.email:t("gOn"))+(st.last?" · "+t("gLast")+" "+new Date(st.last).toLocaleTimeString():"");
+}
+function uiCloud(){document.querySelectorAll(".cloudpill,#cloudStatus").forEach(e=>e.textContent=cloudLabel())}
+function cloudPayload(){const o=JSON.parse(JSON.stringify(S));delete o.settings.aiKey;return o}
+function localEmpty(){return !(S.tasks.length||S.subjects.length||S.projects.length||S.habits.length||S.goals.length||S.assigns.length||S.xp)}
+function applyRemote(remote){
+ const keep={aiKey:S.settings.aiKey,aiUrl:S.settings.aiUrl,aiModel:S.settings.aiModel,lastExport:S.settings.lastExport};
+ S=merge(DEF(),remote);Object.assign(S.settings,keep);S.updatedAt=remote.updatedAt||Date.now();flush();render();toast(t("pulled"));
+}
+function cloudInit(){
+ if(!HAS()||CS)return;
+ CS=ABDOX.sync.object("lifeos",{get:cloudPayload,set:applyRemote,updatedAt:()=>S.updatedAt||0,empty:localEmpty});
+ ABDOX.auth.onChange(uiCloud);ABDOX.widget&&0;
+}
+function cloudSchedule(){if(CS)CS.changed()}
+A.cloud=()=>cloudOK()?CS.now().then(()=>toast(t("synced"))):A.cloudIn();
+A.cloudIn=()=>{if(!HAS())return toast(t("gOnlyStore"));if(!ABDOX.auth.configured())return toast(t("needClient"));ABDOX.auth.signIn().catch(e=>{toast(t("gErr")+" ("+e.message+")")})};
+A.cloudNow=()=>cloudOK()?CS.now().then(()=>toast(t("synced"))):A.cloudIn();
+A.cloudOut=()=>{if(HAS())ABDOX.auth.signOut()};
 /* ============ boot ============ */
 (async()=>{
  await load();
  if("serviceWorker"in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").catch(()=>{});
  render();
- window.__LIFEOS={S:()=>S,A,TM,tmTick,ymd,today,localAI};
+ cloudInit();window.__LIFEOS={S:()=>S,A,TM,tmTick,ymd,today,localAI,cloudPayload};
 })();
 </script>
 </body>
