@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://abdulrahmanbashir501-oss.github.io/abdo-store/sitemap.xml
