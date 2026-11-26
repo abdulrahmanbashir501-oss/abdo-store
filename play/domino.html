@@ -58,7 +58,7 @@ h1.title{text-align:center;font-size:clamp(30px,8vw,44px);font-weight:900;margin
 <div class="topbar"><div class="brand">ABDO <b>X</b> · دومينو</div><a class="back" href="../index.html#games">← المتجر</a></div>
 
 <div class="panel" id="setup">
-  <h1 class="title">🁣 دومينو <b>ABDO X</b></h1>
+  <h1 class="title">دومينو <b>ABDO X</b></h1>
   <p class="sub">سحب وبلوك: خلّص طوبك الأول أو اقفل اللعب بأقل نقط. الكمبيوتر خصمك.</p>
   <div class="opt"><div class="lbl">الهدف (مجموع النقط للفوز)</div>
     <div class="choices" id="tgtRow"><button data-v="50">50</button><button data-v="100" class="on">100</button><button data-v="150">150</button></div></div>
@@ -77,7 +77,7 @@ h1.title{text-align:center;font-size:clamp(30px,8vw,44px);font-weight:900;margin
   <div class="table"><div class="chain" id="chain"></div></div>
   <div class="pick hidden" id="pick"><button data-s="l">◀ ناحية الشمال</button><button data-s="r">ناحية اليمين ▶</button></div>
   <div class="hand" id="hand"></div>
-  <div class="controls"><button id="drawBtn">🂠 اسحب طوبة (<span id="bone">14</span>)</button><button id="passBtn">⏭ عدّي</button><button id="menuBtn">⚙ القائمة</button></div>
+  <div class="controls"><button id="drawBtn">اسحب طوبة (<span id="bone">14</span>)</button><button id="passBtn">⏭ عدّي</button><button id="menuBtn">القائمة</button></div>
   <p class="foot">دومينو ABDO X · 28 طوبة double-6</p>
 </div>
 
@@ -326,9 +326,9 @@ function endRound(){
   locked=true;
   var w=round.roundWinner,pts=round.roundPoints,t,d;
   if(w===-1){t='تعادل';d='القفلة بنفس النقط، محدش خد نقط.';}
-  else{ t=(w===0?'كسبت الجولة 🏆':'الكمبيوتر كسب الجولة 🤖'); d=(round.blocked?'اللعب اتقفل. ':'خلّص طوبه. ')+(w===0?'خدت ':'خد ')+pts+' نقطة.'; }
+  else{ t=(w===0?'كسبت الجولة':'الكمبيوتر كسب الجولة'); d=(round.blocked?'اللعب اتقفل. ':'خلّص طوبه. ')+(w===0?'خدت ':'خد ')+pts+' نقطة.'; }
   var mw=DominoX.finishRound(match,round); $('s0').textContent=match.scores[0]; $('s1').textContent=match.scores[1];
-  if(match.over){ t=(match.winner===0?'كسبت المباراة! 🏆':match.winner===1?'الكمبيوتر كسب المباراة 🤖':'تعادل في المباراة'); d+=' النتيجة '+match.scores[0]+' - '+match.scores[1]; $('nextBtn').textContent='مباراة جديدة'; }
+  if(match.over){ t=(match.winner===0?'كسبت المباراة!':match.winner===1?'الكمبيوتر كسب المباراة':'تعادل في المباراة'); d+=' النتيجة '+match.scores[0]+' - '+match.scores[1]; $('nextBtn').textContent='مباراة جديدة'; }
   else $('nextBtn').textContent='الجولة اللي بعدها';
   $('endTitle').textContent=t; $('endDesc').textContent=d; $('endModal').classList.remove('hidden');
 }

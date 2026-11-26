@@ -43,6 +43,11 @@ h1.title b{color:#E32636;text-shadow:0 0 24px rgba(227,38,54,.6)}
 #grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:420px;aspect-ratio:1}
 .cell{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.12);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:clamp(48px,18vw,84px);font-weight:900;cursor:pointer;transition:.15s;user-select:none;-webkit-user-select:none}
 .cell:hover{border-color:rgba(227,38,54,.6);background:rgba(227,38,54,.08)}
+.mx,.mo{display:inline-block;width:1em;height:1em;vertical-align:-.14em;position:relative}
+.mx::before,.mx::after{content:"";position:absolute;left:50%;top:8%;width:.14em;height:84%;margin-left:-.07em;border-radius:.1em;background:#FF394B;box-shadow:0 0 .3em rgba(255,57,75,.6);transform:rotate(45deg)}
+.mx::after{transform:rotate(-45deg)}
+.mo::before{content:"";position:absolute;inset:10%;border:.14em solid #F5F5F7;border-radius:50%;box-shadow:0 0 .3em rgba(255,255,255,.4)}
+.cell .mx,.cell .mo{font-size:clamp(44px,16vw,76px)}
 .cell.x{color:#FF394B;text-shadow:0 0 24px rgba(255,57,75,.55)}
 .cell.o{color:#F5F5F7;text-shadow:0 0 24px rgba(255,255,255,.35)}
 .cell.win{border-color:#FFD166;background:rgba(255,209,102,.14);animation:winp .5s}
@@ -61,8 +66,8 @@ h1.title b{color:#E32636;text-shadow:0 0 24px rgba(227,38,54,.6)}
 </div>
 
 <div class="panel" id="setup">
-  <h1 class="title">❌⭕ إكس أو <b>ABDO X</b></h1>
-  <p class="sub">الكلاسيكية اللي محدش يمل منها — المستوى الصعب مستحيل تكسبه 😈</p>
+  <h1 class="title"><i class="mx"></i><i class="mo"></i> إكس أو <b>ABDO X</b></h1>
+  <p class="sub">الكلاسيكية اللي محدش يمل منها — المستوى الصعب مستحيل تكسبه</p>
   <div class="opt">
     <div class="lbl">طريقة اللعب</div>
     <div class="choices" id="modeRow">
@@ -73,15 +78,15 @@ h1.title b{color:#E32636;text-shadow:0 0 24px rgba(227,38,54,.6)}
   <div class="opt" id="lvlWrap">
     <div class="lbl">المستوى</div>
     <div class="choices" id="lvlRow">
-      <button data-v="easy">سهل 😊</button>
-      <button data-v="hard" class="on">صعب 😈</button>
+      <button data-v="easy">سهل</button>
+      <button data-v="hard" class="on">صعب</button>
     </div>
   </div>
   <div class="opt" id="markWrap">
     <div class="lbl">العب بـ</div>
     <div class="choices" id="markRow">
-      <button data-v="X" class="on">❌ (تبدأ)</button>
-      <button data-v="O">⭕</button>
+      <button data-v="X" class="on"><i class="mx"></i> (تبدأ)</button>
+      <button data-v="O"><i class="mo"></i></button>
     </div>
   </div>
   <button class="start-btn" id="startBtn">ابدأ اللعب</button>
@@ -90,17 +95,17 @@ h1.title b{color:#E32636;text-shadow:0 0 24px rgba(227,38,54,.6)}
 
 <div id="game" class="hidden">
   <div class="scorebar">
-    <div class="sc"><div class="num" id="scX">0</div><div class="who" id="whoX">أنت ❌</div></div>
+    <div class="sc"><div class="num" id="scX">0</div><div class="who" id="whoX">أنت <i class="mx"></i></div></div>
     <div class="sc"><div class="num" id="scD">0</div><div class="who">تعادل</div></div>
-    <div class="sc"><div class="num" id="scO">0</div><div class="who" id="whoO">الكمبيوتر ⭕</div></div>
+    <div class="sc"><div class="num" id="scO">0</div><div class="who" id="whoO">الكمبيوتر <i class="mo"></i></div></div>
   </div>
   <div class="status" id="statusTxt"></div>
   <div id="grid"></div>
   <div class="controls">
-    <button id="roundBtn">🔄 جولة جديدة</button>
-    <button id="menuBtn">⚙ القائمة</button>
+    <button id="roundBtn">جولة جديدة</button>
+    <button id="menuBtn">القائمة</button>
   </div>
-  <p class="foot">إكس أو ABDO X · المستوى الصعب لا يُهزم (متأكدين بالحسابات 😄)</p>
+  <p class="foot">إكس أو ABDO X · المستوى الصعب لا يُهزم (متأكدين بالحسابات)</p>
 </div>
 
 <script>/* ABDO X XO (tic tac toe) engine — unbeatable minimax + easy random. */
@@ -220,8 +225,8 @@ for (var i=0;i<9;i++){
 document.getElementById('startBtn').addEventListener('click', function(){
   document.getElementById('setup').classList.add('hidden');
   document.getElementById('game').classList.remove('hidden');
-  document.getElementById('whoX').textContent = cfg.mode==='ai' ? (cfg.human==='X'?'أنت ❌':'الكمبيوتر ❌') : 'اللاعب ❌';
-  document.getElementById('whoO').textContent = cfg.mode==='ai' ? (cfg.human==='O'?'أنت ⭕':'الكمبيوتر ⭕') : 'اللاعب ⭕';
+  document.getElementById('whoX').innerHTML = cfg.mode==='ai' ? (cfg.human==='X'?'أنت <i class="mx"></i>':'الكمبيوتر <i class="mx"></i>') : 'اللاعب <i class="mx"></i>';
+  document.getElementById('whoO').innerHTML = cfg.mode==='ai' ? (cfg.human==='O'?'أنت <i class="mo"></i>':'الكمبيوتر <i class="mo"></i>') : 'اللاعب <i class="mo"></i>';
   scores = {X:0,O:0,D:0}; paintScores();
   newRound();
 });
@@ -241,9 +246,9 @@ function newRound(){
 function say(msg){
   if (msg){ statusTxt.innerHTML = msg; return; }
   if (cfg.mode==='ai'){
-    statusTxt.innerHTML = turn===cfg.human ? 'دورك يا بطل 💪' : 'الكمبيوتر بيفكر<span class="thinking"></span>';
+    statusTxt.innerHTML = turn===cfg.human ? 'دورك يا بطل' : 'الكمبيوتر بيفكر<span class="thinking"></span>';
   } else {
-    statusTxt.textContent = 'دور ' + (turn==='X'?'❌':'⭕');
+    statusTxt.innerHTML = 'دور ' + (turn==='X'?'<i class="mx"></i>':'<i class="mo"></i>');
   }
 }
 
@@ -255,7 +260,7 @@ function onTap(idx){
 
 function place(idx){
   b[idx] = turn;
-  cells[idx].textContent = turn==='X'?'❌':'⭕';
+  cells[idx].innerHTML = turn==='X'?'<i class="mx"></i>':'<i class="mo"></i>';
   cells[idx].classList.add(turn.toLowerCase(),'full');
   var w = XOX.winner(b);
   if (w){ finish(w); return; }
@@ -277,14 +282,14 @@ function maybeAI(){
 function finish(w){
   over = true;
   if (w.who==='draw'){
-    scores.D++; say('تعادل 🤝');
+    scores.D++; say('تعادل');
   } else {
     scores[w.who]++;
     w.line.forEach(function(i){ cells[i].classList.add('win'); });
     if (cfg.mode==='ai'){
-      say(w.who===cfg.human ? 'كسبت! 🏆' : 'الكمبيوتر كسب 🤖' + (cfg.level==='hard'?' — قولناك صعب 😈':''));
+      say(w.who===cfg.human ? 'كسبت!' : 'الكمبيوتر كسب' + (cfg.level==='hard'?' — قولناك صعب':''));
     } else {
-      say('كسب ' + (w.who==='X'?'❌':'⭕') + ' 🏆');
+      say('كسب ' + (w.who==='X'?'<i class="mx"></i>':'<i class="mo"></i>') + '');
     }
   }
   paintScores();

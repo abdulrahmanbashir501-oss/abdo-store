@@ -79,7 +79,7 @@ h1.title b{color:#E32636;text-shadow:0 0 24px rgba(227,38,54,.6)}
 </div>
 
 <div class="panel" id="setup">
-  <h1 class="title">♞ شطرنج <b>ABDO X</b></h1>
+  <h1 class="title">شطرنج <b>ABDO X</b></h1>
   <p class="sub">قواعد رسمية كاملة: كش، كش مات، جمود، تبييت، أخذ بالتجاوز وترقية البيادق</p>
   <div class="opt">
     <div class="lbl">طريقة اللعب</div>
@@ -103,7 +103,7 @@ h1.title b{color:#E32636;text-shadow:0 0 24px rgba(227,38,54,.6)}
       <button data-v="b">الأسود</button>
     </div>
   </div>
-  <button class="start-btn" id="startBtn">ابدأ اللعب ♟</button>
+  <button class="start-btn" id="startBtn">ابدأ اللعب</button>
   <p class="foot">اللعبة كلها في ملف واحد · موبايل وكمبيوتر</p>
 </div>
 
@@ -116,7 +116,7 @@ h1.title b{color:#E32636;text-shadow:0 0 24px rgba(227,38,54,.6)}
   <div class="controls">
     <button id="undoBtn">↩ تراجع</button>
     <button id="flipBtn">⟳ اقلب الرقعة</button>
-    <button id="newBtn">♟ لعبة جديدة</button>
+    <button id="newBtn">لعبة جديدة</button>
   </div>
   <div class="moves" id="movesList"></div>
   <p class="foot">شطرنج ABDO X · قواعد رسمية كاملة</p>
@@ -134,7 +134,7 @@ h1.title b{color:#E32636;text-shadow:0 0 24px rgba(227,38,54,.6)}
   <div class="box">
     <h2 id="endTitle"></h2>
     <p id="endDesc"></p>
-    <button class="start-btn" id="againBtn">لعبة جديدة ♟</button>
+    <button class="start-btn" id="againBtn">لعبة جديدة</button>
   </div>
 </div>
 
@@ -776,22 +776,22 @@ function updateStatus(){
       var winnerIsWhite = pos.turn===ChessX.BLACK;
       if (cfg.mode==='ai'){
         var humanWon = (winnerIsWhite && cfg.human===ChessX.WHITE) || (!winnerIsWhite && cfg.human===ChessX.BLACK);
-        t = humanWon ? 'كش مات! كسبت 🏆' : 'كش مات! الكمبيوتر كسب 🤖';
+        t = humanWon ? 'كش مات! كسبت' : 'كش مات! الكمبيوتر كسب';
         d = humanWon ? 'مبروك يا بطل! جرب مستوى أصعب؟' : 'حظ أوفر المرة الجاية، جرب تاني.';
       } else {
-        t = 'كش مات! كسب ' + (winnerIsWhite?'الأبيض':'الأسود') + ' 🏆';
+        t = 'كش مات! كسب ' + (winnerIsWhite?'الأبيض':'الأسود') + '';
         d = 'GG! جاهزين لجولة تانية؟';
       }
     } else {
-      t = 'تعادل بالجمود 🤝'; d = 'مفيش حركة قانونية والملك مش في كش.';
+      t = 'تعادل بالجمود'; d = 'مفيش حركة قانونية والملك مش في كش.';
     }
     showEnd(t,d);
     statusTxt.textContent = chk ? 'كش مات' : 'تعادل';
     turnLbl.innerHTML = '<span class="turn-dot '+(pos.turn===ChessX.WHITE?'w':'b')+'"></span>انتهت اللعبة';
     return true;
   }
-  if (pos.half>=100){ over=true; showEnd('تعادل 🤝','قاعدة الخمسين نقلة.'); return true; }
-  if (ChessX.insufficientMaterial(pos)){ over=true; showEnd('تعادل 🤝','مفيش قطع كفاية لكش مات.'); return true; }
+  if (pos.half>=100){ over=true; showEnd('تعادل','قاعدة الخمسين نقلة.'); return true; }
+  if (ChessX.insufficientMaterial(pos)){ over=true; showEnd('تعادل','مفيش قطع كفاية لكش مات.'); return true; }
   statusTxt.textContent = chk ? 'كش!' : '';
   turnLbl.innerHTML = '<span class="turn-dot '+(pos.turn===ChessX.WHITE?'w':'b')+'"></span>دور '+(pos.turn===ChessX.WHITE?'الأبيض':'الأسود');
   return false;
