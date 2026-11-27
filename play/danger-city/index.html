@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>DANGER CITY — ABDO X</title>
+<style>
+@font-face{font-family:Cairo;src:url(fonts/cairo-ar.woff2) format('woff2');font-weight:400 900;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200E,U+FB50-FDFF,U+FE70-FEFC}
+@font-face{font-family:Cairo;src:url(fonts/cairo-lat.woff2) format('woff2');font-weight:400 900;unicode-range:U+0000-00FF,U+2000-206F}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:Cairo,Tahoma,sans-serif;color:#fff;user-select:none;-webkit-user-select:none;touch-action:none}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;background:#000}
+.scr{position:fixed;inset:0;display:none;z-index:20;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(120% 100% at 50% 0%,#1a0608 0%,#0a0a0c 55%,#000 100%)}
+.scr.on{display:flex}
+.logo{font-weight:900;font-size:clamp(40px,11vw,86px);letter-spacing:2px;line-height:1.05;color:#fff;text-shadow:0 0 24px rgba(224,30,38,.55)}
+.logo b{color:#e01e26}
+.tag{color:#c9c9cf;font-size:clamp(13px,3.4vw,18px);margin-top:2px}
+.tag b{color:#e01e26}
+.dev{position:absolute;bottom:14px;font-size:12px;color:#8a8a92;letter-spacing:3px}
+.menu{margin-top:34px;display:flex;flex-direction:column;gap:12px;width:min(78vw,320px)}
+.btn{font-family:inherit;font-size:19px;font-weight:700;color:#fff;background:linear-gradient(180deg,#17171c,#0d0d10);border:1px solid #3a3a42;border-right:4px solid #e01e26;border-radius:10px;padding:13px 18px;text-align:center;cursor:pointer}
+.btn:active{background:#e01e26;border-color:#e01e26;color:#fff}
+.btn.red{background:linear-gradient(180deg,#c21419,#8f0d11);border-color:#ff5960}
+.btn.dis{opacity:.4;pointer-events:none}
+/* loading */
+#loadbar{width:min(70vw,340px);height:10px;border:1px solid #3a3a42;border-radius:6px;margin-top:34px;overflow:hidden;background:#0d0d10}
+#loadfill{height:100%;width:0%;background:linear-gradient(90deg,#8f0d11,#e01e26,#ff5960);transition:width .2s}
+#loadtxt{margin-top:10px;font-size:14px;color:#c9c9cf}
+/* HUD */
+#hud{position:fixed;inset:0;display:none;z-index:10;pointer-events:none}
+#hud.on{display:block}
+.panel{background:rgba(8,8,10,.62);border:1px solid rgba(224,30,38,.45);border-radius:10px;backdrop-filter:blur(2px)}
+#topleft{position:absolute;top:calc(8px + env(safe-area-inset-top));left:10px;display:flex;flex-direction:column;gap:6px}
+#hpwrap{width:150px;padding:6px 8px}
+#hplabel{font-size:11px;color:#ffb3b6;display:flex;justify-content:space-between}
+#hpbar{height:8px;border-radius:5px;background:#2a2a30;margin-top:3px;overflow:hidden}
+#hpfill{height:100%;width:100%;background:linear-gradient(90deg,#8f0d11,#ff5960);transition:width .25s}
+#money{padding:5px 10px;font-size:16px;font-weight:900;color:#ffd34d}
+#topright{position:absolute;top:calc(8px + env(safe-area-inset-top));right:10px;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+#minimap{width:104px;height:104px;border-radius:50%;border:2px solid rgba(224,30,38,.6);background:#0d0d10}
+#clock{padding:4px 12px;font-size:15px;font-weight:700;color:#fff}
+#speed{position:absolute;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);padding:3px 14px;font-size:17px;font-weight:900;color:#fff}
+#speed small{color:#ff5960;font-size:11px}
+#pausebtn{position:absolute;top:calc(118px + env(safe-area-inset-top));right:10px;width:42px;height:42px;pointer-events:auto;font-size:16px;border-radius:50%;background:rgba(8,8,10,.62);border:1px solid rgba(224,30,38,.45);color:#fff}
+/* touch */
+#stick{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));left:22px;width:126px;height:126px;border-radius:50%;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.22);z-index:11;display:none}
+#knob{position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:rgba(224,30,38,.75);border:2px solid rgba(255,255,255,.5)}
+.abtn{position:fixed;width:64px;height:64px;border-radius:50%;z-index:11;display:none;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff;background:rgba(224,30,38,.5);border:2px solid rgba(255,255,255,.35)}
+.abtn.on{background:rgba(224,30,38,.95)}
+#btnJump{right:26px;bottom:calc(30px + env(safe-area-inset-bottom))}
+#btnRun{right:104px;bottom:calc(66px + env(safe-area-inset-bottom))}
+body.playing #stick,body.playing .abtn{display:flex}
+body.playing #btnCar{display:none}
+body.playing #btnCar.near{display:flex}
+/* settings */
+.box{width:min(88vw,420px);background:#101014;border:1px solid #3a3a42;border-top:3px solid #e01e26;border-radius:14px;padding:18px}
+.box h2{font-size:20px;color:#e01e26;margin-bottom:12px;text-align:center}
+.row{display:flex;align-items:center;justify-content:space-between;margin:12px 0;font-size:15px}
+.seg{display:flex;gap:6px}
+.seg button{font-family:inherit;font-size:13px;font-weight:700;padding:7px 12px;border-radius:8px;border:1px solid #3a3a42;background:#17171c;color:#c9c9cf}
+.seg button.on{background:#e01e26;border-color:#ff5960;color:#fff}
+input[type=range]{width:150px;accent-color:#e01e26}
+@media (max-height:500px){
+.logo{font-size:clamp(28px,7vh,48px)}
+.menu{margin-top:14px;gap:8px}
+.btn{padding:9px 16px;font-size:16px}
+.scr{justify-content:flex-start;padding-top:5vh}
+#stick{width:110px;height:110px;bottom:14px;left:16px}
+#minimap{width:88px;height:88px}
+#pausebtn{top:calc(102px + env(safe-area-inset-top))}
+}
+#toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%);background:rgba(8,8,10,.85);border:1px solid #e01e26;border-radius:10px;padding:8px 18px;font-size:15px;font-weight:700;z-index:18;display:none}
+#garage{z-index:40 !important}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<div id="hud">
+  <div id="topleft">
+    <div class="panel" id="hpwrap"><div id="hplabel"><span>الصحة</span><span id="hpnum">100</span></div><div id="hpbar"><div id="hpfill"></div></div></div>
+    <div class="panel" id="money">$ 0</div>
+    <div class="panel" id="wanted" style="display:none;color:#ff5960;font-size:15px;letter-spacing:2px;padding:3px 10px">★</div>
+  </div>
+  <div id="topright">
+    <canvas id="minimap" width="104" height="104"></canvas>
+    <div class="panel" id="clock">12:00</div>
+  </div>
+  <button id="pausebtn">⏸</button>
+  <div class="panel" id="speed">0 <small>كم/س</small></div>
+  <div class="panel" id="obj" style="display:none;position:absolute;top:calc(8px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);padding:5px 14px;font-size:13px;font-weight:700;color:#ffd34d;max-width:60vw;text-align:center"></div>
+  <button id="garageBtn" class="panel" style="display:none;position:absolute;bottom:calc(110px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);pointer-events:auto;color:#fff;font-size:14px;font-weight:700;padding:8px 18px">🔧 دخول الجراج</button>
+</div>
+
+<div id="stick"><div id="knob"></div></div>
+<div class="abtn" id="btnJump">قفز</div>
+<div class="abtn" id="btnCar" style="right:104px;bottom:calc(140px + env(safe-area-inset-bottom));background:rgba(20,20,26,.7);display:none">ركوب</div>
+<div class="abtn" id="btnRun">جري</div>
+
+<div class="scr on" id="scr-boot">
+  <div class="logo">DANGER <b>CITY</b></div>
+  <div class="tag">المدينة <b>لك</b> — THE CITY IS YOURS</div>
+  <div id="loadbar"><div id="loadfill"></div></div>
+  <div id="loadtxt">جاري التحميل...</div>
+  <div class="dev">ABDO X</div>
+</div>
+
+<div class="scr" id="scr-menu">
+  <div class="logo">DANGER <b>CITY</b></div>
+  <div class="tag">المدينة <b>لك</b></div>
+  <div class="menu">
+    <button class="btn red" id="mNew">لعبة جديدة</button>
+    <button class="btn" id="mCont">استكمال</button>
+    <button class="btn" id="mSet">الإعدادات</button>
+    <button class="btn" id="mExit">خروج</button>
+  </div>
+  <div class="dev">ABDO X — DANGER CITY v1.0</div>
+</div>
+
+<div class="scr" id="scr-set">
+  <div class="box">
+    <h2>الإعدادات</h2>
+    <div class="row"><span>جودة الرسوم</span>
+      <div class="seg" id="qseg">
+        <button data-q="0">منخفضة</button><button data-q="1">متوسطة</button><button data-q="2">عالية</button>
+      </div>
+    </div>
+    <div class="row"><span>حساسية الكاميرا</span><input type="range" id="sens" min="30" max="200" value="100"></div>
+    <div class="row"><span>المساء / الصباح</span><div class="seg" id="tseg"><button data-t="day">نهار</button><button data-t="night">ليل</button></div></div>
+    <div class="row"><span>FPS</span><span id="fpsv" style="color:#ff5960;font-weight:900">--</span></div>
+    <button class="btn red" id="setBack" style="width:100%;margin-top:8px">رجوع</button>
+  </div>
+</div>
+
+<div class="scr" id="scr-pause" style="background:rgba(0,0,0,.72)">
+  <div class="logo" style="font-size:38px">إيقاف <b>مؤقت</b></div>
+  <div class="menu">
+    <button class="btn red" id="pResume">استئناف</button>
+    <button class="btn" id="pSet">الإعدادات</button>
+    <button class="btn" id="pMenu">القائمة الرئيسية</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+<script src="game.js"></script>
+</body>
+</html>

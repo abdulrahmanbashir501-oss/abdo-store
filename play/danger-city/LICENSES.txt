@@ -1,0 +1,26 @@
+DANGER CITY (ABDO X) - third-party asset credits & licenses
+============================================================
+
+1. KayKit - City Builder Bits 1.0
+   Author: Kay Lousberg (www.kaylousberg.com)
+   License: CC0 1.0 (Creative Commons Zero) - free for personal and commercial use
+   Source: https://github.com/KayKit-Game-Assets/KayKit-City-Builder-Bits-1.0
+   Used for: car_sedan, car_hatchback, car_stationwagon, car_taxi, car_police,
+             building_A/C/E/G, watertower, dumpster, bench models.
+
+2. RobotExpressive character
+   Model by Tomas Laulhe, modifications by Don McCurdy (three.js examples)
+   License: CC0 1.0
+   Source: https://github.com/mrdoob/three.js (examples/models/gltf/RobotExpressive)
+   Used for: the player character and its Idle/Walking/Running/Jump animations.
+
+3. Asphalt030 texture
+   Source: ambientCG (ambientcg.com)
+   License: CC0 1.0
+   Used for: road surface texture (tex/asphalt.jpg).
+
+4. Cairo font - SIL Open Font License 1.1 (Google Fonts).
+
+5. three.js - MIT License. meshoptimizer - MIT License.
+
+All other landmark models (www/models/*.glb) are the game owner's own Unity assets.
